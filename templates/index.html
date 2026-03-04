@@ -4905,6 +4905,7 @@ function renderPage7() {
         return;
       }
       document.getElementById('cost-linkage-body').innerHTML = _buildCompactRecTable(data.recommendations, 'Cost Triggers', 'cost');
+    })
     .catch(() => {
       document.getElementById('cost-linkage-body').innerHTML = '<em>Could not load recommendations.</em>';
     });
@@ -5548,7 +5549,7 @@ function openInitEditor(idx) {
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           ${allBUs.map(bu => {
             const buPct = (init._buMix || {})[bu] || Math.round(100/allBUs.length);
-            return '<div style="display:flex;align-items:center;gap:4px;font-size:10px;"><span>' + bu + ':</span><input type="number" value="' + buPct + '" min="0" max="100" step="5" style="width:40px;font-size:10px;text-align:center;border:1px solid var(--ey-mid-gray);border-radius:3px;padding:1px;" onchange="if(!INITIATIVES[' + idx + ']._buMix)INITIATIVES[' + idx + ']._buMix={};INITIATIVES[' + idx + ']._buMix[\\''+bu+'\\']= parseInt(this.value)">%</div>';
+            return '<div style="display:flex;align-items:center;gap:4px;font-size:10px;"><span>' + bu + ':</span><input type="number" value="' + buPct + '" min="0" max="100" step="5" style="width:40px;font-size:10px;text-align:center;border:1px solid var(--ey-mid-gray);border-radius:3px;padding:1px;" onchange="if(!INITIATIVES[' + idx + ']._buMix)INITIATIVES[' + idx + ']._buMix={};INITIATIVES[' + idx + ']._buMix[\''+bu+'\']= parseInt(this.value)">%</div>';
           }).join('')}
         </div>
       </div>
@@ -8221,7 +8222,7 @@ function renderPage17() {
           html += '<span style="font-weight:600;color:'+c+';">'+loc+'</span>';
           html += '<span style="font-weight:700;">'+tgtPct+'%'+deltaLabel+' <span style="color:var(--ey-text-light);font-weight:400;">(was '+curPct+'%)</span></span></div>';
           html += '<input type="range" min="0" max="100" step="5" value="'+tgtPct+'" style="width:100%;accent-color:'+c+';height:4px;" ';
-          html += 'oninput="_buLocMixUpdate(\\''+bu+'\\',\\''+loc+'\\',this.value)">';
+          html += 'oninput="_buLocMixUpdate(\''+bu+'\',\''+loc+'\',this.value)">';
           html += '<div style="width:100%;height:6px;background:var(--ey-mid-gray);border-radius:3px;margin-top:3px;overflow:hidden;">';
           html += '<div style="width:'+tgtPct+'%;height:100%;background:'+c+';border-radius:3px;"></div></div>';
           html += '</div>';
@@ -8475,7 +8476,7 @@ function renderPage19() {
     const cplxColor = cplx >= 0.66 || cplx === 'complex' ? 'var(--ey-red)' : cplx >= 0.33 || cplx === 'moderate' ? 'var(--ey-amber)' : 'var(--ey-green)';
     // v12-#54: Sub-intents for this queue's intent
     const qSubs = hasSI ? siFlat.filter(si => si.parentIntent === q.intent) : [];
-    const expandBtn = qSubs.length > 0 ? '<span style="cursor:pointer;font-size:13px;" onclick="this.textContent=this.textContent===\\'▸\\'?\\'▾\\':\\'▸\\';document.querySelectorAll(\\'.si-row-'+qIdx+'\\').forEach(r=>r.style.display=r.style.display===\\'none\\'?\\'table-row\\':\\'none\\')">▸</span> ' : '';
+    const expandBtn = qSubs.length > 0 ? '<span style="cursor:pointer;font-size:13px;" onclick="this.textContent=this.textContent===\'▸\'?\'▾\':\'▸\';document.querySelectorAll(\'.si-row-'+qIdx+'\').forEach(r=>r.style.display=r.style.display===\'none\'?\'table-row\':\'none\')">▸</span> ' : '';
     h += `<tr>
       <td><strong>${expandBtn}${q.bu||''}</strong></td>
       <td>${(q.intent||'').substring(0,25)}</td>
